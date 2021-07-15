@@ -9,10 +9,11 @@ where the client would like to go eventually would like to create
 data bases if the person is not a client yet and go adding little by little 
 
 """
-clients = ["Jose" , "Maira" , "Mairiyisel" , "Daniela" , "Angeles"]
 print("Buenos dias soy su asistente virtual")
 print("Por favor regala tus datos para ayudater en tu siguiente aventura")
 print("\n")
+db = open("clients.txt", "r")
+clients = db.read()
 name = input("Perfecto,como es tu nombre? : ")
 if name in clients:
     city = input("En que ciudad te encuentras? : ")
@@ -39,8 +40,12 @@ else:
     print("2. No")
     answer = int(input())
     if answer == 1:
-        clients.append([name])
-        print(*clients, sep = "\n")
+        db = open("clients.txt", "a")
+        db.write(name)
+        db = open("clients.txt", "r")
+        print_list = db.read()
+        db.close()
+        print(print_list)
     
     elif answer == 2:
         print("ok, thank you for wanted our services")
