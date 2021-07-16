@@ -9,46 +9,73 @@ where the client would like to go eventually would like to create
 data bases if the person is not a client yet and go adding little by little 
 
 """
-print("Buenos dias soy su asistente virtual")
-print("Por favor regala tus datos para ayudater en tu siguiente aventura")
-print("\n")
-db = open("clients.txt", "r")
-clients = db.read()
-name = input("Perfecto,como es tu nombre? : ")
-if name in clients:
-    city = input("En que ciudad te encuentras? : ")
-    id_ = input("Como es numero de identificación? : ")
-    print("\n")
-    print("Ok!!, ahora regalame los datos de tu viaje")
-    print("\n")
-    origin = input("Desde cual ciudad seria tu punto de partida? :")
-    destination = input("A cual ciudad te diriges? :")
-    date = input("Fecha de aventura? :")
-    quota = input("Cuantas personas van? :")
-    
-    response = f'Ok,{name}, tu viaje fue programdo con exito!! \n\
-         Tu vuelo partirá desde la ciudad de {origin} con \n\
-         destino a la ciudad {destination} en la fecha {date}\n\
-         y tienes tiques para {quota} personas'
+#make the variable condition global so I can use it
+#in both function with no problem ps: this method did not work
+#I had to break the code in the while function
 
-    
+condition = True
+
+#function to know the details about the trip
+#have to send the parameter to the function 
+def travel_info (name):
+    print("Let's start building your next vacation")
+    city = input("What is your city of origin?")
+    destination = input("where would you like to go?")
+    date = input("What is the best date for your trip?")
+    passenger = input("How many people are traveling with you?")
+    response = f' ok, {name}, we have booked your trip! \n\
+    Departing from {city} going to {destination} in the dates {date} \n\
+    and you are traveling with {passenger} people'
     print(response)
-else: 
-    print("would you like to create an account? ")
+    
+#know if the client exist in the data base if not add 
+#it if he/she wants
+def verification (name):
+    db = open("clients.txt", "r")
+    clients = db.read()
+
+    if name in clients:
+        travel_info(name)    
+      
+    else: 
+        print("would you like to create an account? ")
+        print("\n")
+        print("1. Yes")
+        print("2. No")
+        answer = int(input())
+
+        #created the loop in order to ask for a valid option if it was needed
+        while condition == True:
+            if answer == 1:
+                condition == False
+                db = open("clients.txt", "a")
+                db.write(name)
+                db = open("clients.txt", "r")
+                print_list = db.read()
+                db.close()
+                travel_info(name)
+                break     #break the code because I was not able to take it out of the loop 
+            
+            elif answer == 2:
+                condition == False
+                print("ok, thank you for wanted our services")
+                break
+
+            else:
+                print("Enter a valid option")
+                print("1. yes \n  2. no")
+                condition == True
+                answer = int(input())
+
+def main():
+    print("Hi, I am your virtual asistant")
+    print("""May I please have your information to help you to 
+    create your next aventure""")
     print("\n")
-    print("1. Yes")
-    print("2. No")
-    answer = int(input())
-    if answer == 1:
-        db = open("clients.txt", "a")
-        db.write(name)
-        db = open("clients.txt", "r")
-        print_list = db.read()
-        db.close()
-        print(print_list)
-    
-    elif answer == 2:
-        print("ok, thank you for wanted our services")
-    
-    else:
-        print("Enter a valid option")
+    db = open("clients.txt", "r")
+    clients = db.read()
+    name = input("What is your name: ")
+    verification(name)
+
+if __name__ == '__main__':
+    main()
