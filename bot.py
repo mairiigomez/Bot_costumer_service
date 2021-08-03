@@ -13,7 +13,7 @@ data bases if the person is not a client yet and go adding little by little
 #in both function with no problem ps: this method did not work
 #I had to break the code in the while function
 
-condition = True
+
 
 #function to know the details about the trip
 #have to send the parameter to the function 
@@ -32,12 +32,24 @@ def travel_info (name):
 #it if he/she wants
 def verification (name):
     db = open("clients.txt", "r")
-    clients = db.read()
+    clients = db.readlines()
+    clients_clean = []
 
-    if name in clients:
+    for name_db in clients:
+        clients_clean.append(name_db.strip())
+
+    #print(clients)
+    #print(clients_clean)
+    #clients = clients.split(" ")
+    #print(clients)
+    
+
+    if name in clients_clean:
+        #print("True")
         travel_info(name)    
-      
+
     else: 
+        condition = True
         print("would you like to create an account? ")
         print("\n")
         print("1. Yes")
@@ -47,18 +59,23 @@ def verification (name):
         #created the loop in order to ask for a valid option if it was needed
         while condition == True:
             if answer == 1:
-                condition == False
                 db = open("clients.txt", "a")
-                db.write(name)
-                db = open("clients.txt", "r")
-                print_list = db.read()
+                #this way it give an enter after each name separate them
+                db.write(name + "\n")    
+                #db = open("clients.txt", "r")
+                #print_list = db.read()
                 db.close()
                 travel_info(name)
-                break     #break the code because I was not able to take it out of the loop 
+                condition = False
+
+                #broke the code because I was not able to take it out of the loop
+                #break     
             
             elif answer == 2:
-                condition == False
+            
                 print("ok, thank you for wanted our services")
+                condition == False
+
                 break
 
             else:
@@ -69,12 +86,14 @@ def verification (name):
 
 def main():
     print("Hi, I am your virtual asistant")
+    print("Your virtual vacation")
     print("""May I please have your information to help you to 
     create your next aventure""")
     print("\n")
-    db = open("clients.txt", "r")
-    clients = db.read()
+    #db = open("clients.txt", "r")
+    #clients = db.read()
     name = input("What is your name: ")
+
     verification(name)
 
 if __name__ == '__main__':
