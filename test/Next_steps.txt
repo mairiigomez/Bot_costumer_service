@@ -17,3 +17,9 @@ work on adding string validator, exceptions cvs files and more to my alg bot pro
 #make the variable condition global so I can use it
 #in both function with no problem ps: this method did not work
 #I had to break the code in the while function
+
+Simulate a bot that helps to plan your next vacation.
+
+Ask for information about the client, added to a csv file if it is not on file Create a vacation for the person
+
+Next Steps: Printing the itinerary Searching for prices online Create a interface where they can pick
