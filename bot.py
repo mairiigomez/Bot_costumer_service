@@ -1,26 +1,33 @@
-""" 
-This is a bot that is going to help to book you next vacation
+"""This is a bot that is going to help to book you next vacation
 you can choose any place to the caribbean island 
-version: v1
-date: 14/07/2021 
+version: v2
+date: 10/08/2021 
 
-We will start with knowinng the information of the client
+We will start with knowing the information of the client
 where the client would like to go eventually would like to create 
-data bases if the person is not a client yet and go adding little by little 
+data bases if the person is not a client yet and go adding little by little"""
 
-"""
-#make the variable condition global so I can use it
-#in both function with no problem ps: this method did not work
-#I had to break the code in the while function
+import csv
 
+def log_in_client():
+    """Ask for credentials of the client verify it a appropiate format"""
 
+    while True:
+        name = input("What is your name?: ")
+        identification = input("What is your id?: ")
 
-#function to know the details about the trip
-#have to send the parameter to the function 
+        if str.isdigit(identification) and str.isalpha(name):
+            verification(name,identification)
+            break
+        else:
+            print("Please enter a valid data")
+
 def travel_info (name):
-    print("Let's start building your next vacation")
-    city = input("What is your city of origin?")
-    destination = input("where would you like to go?")
+    """Ask about the travel information and print a formatted plan trip"""
+
+    print("Let's start building your next vacation!")
+    city = input("What is your city of origin?: ")
+    destination = input("where would you like to go?: ")
     date = input("What is the best date for your trip?")
     passenger = input("How many people are traveling with you?")
     response = f' ok, {name}, we have booked your trip! \n\
@@ -28,73 +35,57 @@ def travel_info (name):
     and you are traveling with {passenger} people'
     print(response)
     
-#know if the client exist in the data base if not add 
-#it if he/she wants
-def verification (name):
-    db = open("clients.txt", "r")
-    clients = db.readlines()
-    clients_clean = []
-
-    for name_db in clients:
-        clients_clean.append(name_db.strip())
-
-    #print(clients)
-    #print(clients_clean)
-    #clients = clients.split(" ")
-    #print(clients)
-    
-
-    if name in clients_clean:
-        #print("True")
-        travel_info(name)    
-
-    else: 
-        condition = True
-        print("would you like to create an account? ")
-        print("\n")
-        print("1. Yes")
-        print("2. No")
-        answer = int(input())
-
-        #created the loop in order to ask for a valid option if it was needed
-        while condition == True:
-            if answer == 1:
-                db = open("clients.txt", "a")
-                #this way it give an enter after each name separate them
-                db.write(name + "\n")    
-                #db = open("clients.txt", "r")
-                #print_list = db.read()
-                db.close()
-                travel_info(name)
-                condition = False
-
-                #broke the code because I was not able to take it out of the loop
-                #break     
+def verification (name, identification):
+    """Know if the client exist in the csv file if not add the client if he/she wants"""
+    client_in_file = False
+    last_id_client = 0 
+    with open('clients_files.csv') as csv_file:
+        #read the csv as a dictionary takes the first row as keys
+        reader = csv.DictReader(csv_file, delimiter = ";")
+        for dict_row in reader: 
+            last_id_client += 1
+            if dict_row['client'] == name and dict_row['identification'] == identification: 
+                client_in_file = True
             
-            elif answer == 2:
-            
-                print("ok, thank you for wanted our services")
-                condition == False
+        if client_in_file:
+            travel_info(name)
 
-                break
+        else: 
+            condition = True
+            print("would you like to create an account? ")
+            print("\n")
+            print("1. Yes")
+            print("2. No")
+            answer = int(input())
 
-            else:
-                print("Enter a valid option")
-                print("1. yes \n  2. no")
-                condition == True
-                answer = int(input())
+            #created the loop in order to ask for a valid option if it was needed
+            while condition:
+                if answer == 1:
+                    with open('clients_files.csv', 'a', newline='') as csv_file:
+                        fieldnames = ['number_client', 'client', 'identification'] 
+                        writer = csv.DictWriter(csv_file, delimiter=";", fieldnames=fieldnames)
+                        writer.writerow({'number_client': last_id_client + 1, 'client':name,'identification':identification})
+                    
+                    travel_info(name)
+                    condition = False  
+                
+                elif answer == 2:
+                    print("ok, thank you for wanted our services")
+                    condition == False
+                    break
+
+                else:
+                    print("Enter a valid option")
+                    print("1. yes \n2. no")
+                    condition == True
+                    answer = int(input())
 
 def main():
-    print("Hi, I am your virtual asistant")
-    print("Your virtual vacation")
-    print("""May I please have your information to help you to 
-    create your next aventure""")
+    """Main function of the bot to create a vacation"""
+    print("""Hi, I am your virtual asistant to help you build your
+    next vacation""")
     print("\n")
-    #db = open("clients.txt", "r")
-    #clients = db.read()
-    name = input("What is your name: ")
-
-    verification(name)
-
+    log_in_client()
+    
 if __name__ == '__main__':
     main()

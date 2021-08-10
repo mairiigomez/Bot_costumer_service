@@ -1,0 +1,19 @@
+it is a bot 
+Thank you for calling guajiera 
+
+
+
+....09/08/2021 
+I could read and write to the CSV file 
+I could add a string validator to the input of the user 
+next--> refactor the code create some classes 
+
+
+lo final va a ser simular lo que yo hacia en ALG pero pues yo sería el bot
+correo, pdf 
+
+work on adding string validator, exceptions cvs files and more to my alg bot project 
+
+#make the variable condition global so I can use it
+#in both function with no problem ps: this method did not work
+#I had to break the code in the while function
